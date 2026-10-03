@@ -7,4 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Automatic releases are produced by [release-please](https://github.com/googleapis/release-please)
 from [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [0.2.0](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.1.0...v0.2.0) (2026-10-03)
+
+
+### Features
+
+* add GroupMe Client ID for Connect with GroupMe ([dcbce66](https://github.com/Burton-Workspaces/burton-groupme/commit/dcbce66edc207d1e416fb24a657f55789b710216))
+* hop GroupMe OAuth through an HTTPS Pages callback ([eb7674d](https://github.com/Burton-Workspaces/burton-groupme/commit/eb7674ddbc758598dd5bd5fad3e028cc3f7aec3f))
+
 ## [Unreleased]
