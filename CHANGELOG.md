@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Automatic releases are produced by [release-please](https://github.com/googleapis/release-please)
 from [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [0.3.0](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.2.1...v0.3.0) (2026-10-03)
+
+
+### Features
+
+* file issues by shaking or long-pressing About ([aa266ba](https://github.com/Burton-Workspaces/burton-groupme/commit/aa266ba76c9933ba921a88114b2403c8ffb30b12))
+
 ## [0.2.1](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.2.0...v0.2.1) (2026-10-03)
 
 
