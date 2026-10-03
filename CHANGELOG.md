@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Automatic releases are produced by [release-please](https://github.com/googleapis/release-please)
 from [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [0.2.1](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.2.0...v0.2.1) (2026-10-03)
+
+
+### Bug Fixes
+
+* stamp a G on the launcher icon so it differs from Slack ([7481681](https://github.com/Burton-Workspaces/burton-groupme/commit/74816816d68aff3cea1d236ab23f8d68e8f20d1a))
+
 ## [0.2.0](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.1.0...v0.2.0) (2026-10-03)
 
 
