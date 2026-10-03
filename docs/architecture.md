@@ -14,7 +14,7 @@ di/          OkHttp, Coil ImageLoader
 
 ## Auth
 
-Connect with GroupMe opens `https://oauth.groupme.com/oauth/authorize` in a Custom Tab and returns to `burtongroupme://oauth` with `access_token` in the query or fragment. There is no client secret in the APK. GroupMe access tokens do not rotate in this client. Tokens live in DataStore (`burton_groupme`) as `user_token`. Paste-token sign-in stores the same field.
+Connect with GroupMe opens `https://oauth.groupme.com/oauth/authorize?client_id=…` in a Custom Tab. GroupMe requires an HTTPS callback, so it returns to `https://burton-workspaces.github.io/burton-groupme/oauth/?access_token=…`. That static page (`web/oauth/index.html`) hops to `burtongroupme://oauth` (or the same HTTPS URL if Android delivers it to the activity). There is no client secret in the APK. GroupMe access tokens do not rotate in this client. Tokens live in DataStore (`burton_groupme`) as `user_token`. Paste-token sign-in stores the same field.
 
 `users/me` fills the account snapshot. Screens never see the token string after sign-in; the repository holds it in memory and DataStore.
 

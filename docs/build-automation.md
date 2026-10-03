@@ -18,6 +18,7 @@ Day-to-day versioning is in [releases.md](releases.md). Commit message rules are
 | [`.github/workflows/conventional-commits.yml`](../.github/workflows/conventional-commits.yml) | Commit subjects and PR titles |
 | [`.github/workflows/release.yml`](../.github/workflows/release.yml) | release-please; packs APK when a release is created |
 | [`.github/workflows/release-assets.yml`](../.github/workflows/release-assets.yml) | Signed `assembleRelease`, upload APK |
+| [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) | HTTPS OAuth hop at `…/burton-groupme/oauth/` |
 | [`.github/actions/setup-android-ci`](../.github/actions/setup-android-ci/action.yml) | Temurin 17, Android SDK `platform-tools`, `local.properties` |
 | [`release-please-config.json`](../release-please-config.json) | SemVer, `CHANGELOG.md`, tags `vX.Y.Z` |
 | [`scripts/install-git-hooks.sh`](../scripts/install-git-hooks.sh) | Local `commit-msg` hook |
@@ -37,6 +38,8 @@ Release-please only runs when `github.repository` is `Burton-Workspaces/burton-g
 Without that checkbox, release-please can push `release-please--branches--master` but fails with *GitHub Actions is not permitted to create or approve pull requests*.
 
 `GITHUB_TOKEN` is enough. Do not put a personal access token in the workflows for this.
+
+**Settings → Pages → Build and deployment → Source:** GitHub Actions. Needed so GroupMe can redirect to `https://burton-workspaces.github.io/burton-groupme/oauth/`.
 
 ## 2. Local keystore (machine)
 

@@ -1,3 +1,5 @@
 # Public GroupMe application Client ID (not a secret). Register the app at
-# https://dev.groupme.com/ and set the callback URL to burtongroupme://oauth.
-# Leave this file empty (comments only) until that Client ID exists.
+# https://dev.groupme.com/ with callback URL:
+#   https://burton-workspaces.github.io/burton-groupme/oauth/
+# That HTTPS page hops to burtongroupme://oauth. Leave this file empty
+# (comments only) until that Client ID exists.

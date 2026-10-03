@@ -5,9 +5,13 @@ Burton GroupMe is an account client. Sign in with **Connect with GroupMe**. The 
 ## Connect
 
 1. Tap **Connect with GroupMe** and allow the Burton GroupMe application in the browser.
-2. GroupMe returns you to the app. The access token stays on the phone (DataStore).
+2. GroupMe redirects to an HTTPS page; that page opens the app. The access token stays on the phone (DataStore).
 
-The GroupMe application is registered at [dev.groupme.com](https://dev.groupme.com/) with callback `burtongroupme://oauth`. Someone has to create it once, then put the public Client ID in `groupme/client-id.txt`. After that, every phone uses the same application.
+The GroupMe application is registered at [dev.groupme.com](https://dev.groupme.com/). GroupMe requires an **HTTPS** callback, so register:
+
+`https://burton-workspaces.github.io/burton-groupme/oauth/`
+
+That Pages hop (`web/oauth/index.html`) opens `burtongroupme://oauth` with the token. Someone has to create the GroupMe application once, then put the public Client ID in `groupme/client-id.txt`. After that, every phone uses the same application.
 
 Sign out from Settings. That deletes the token from the phone.
 

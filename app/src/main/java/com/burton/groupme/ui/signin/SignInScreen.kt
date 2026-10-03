@@ -74,7 +74,7 @@ fun SignInScreen(
         if (!ui.oauthConfigured) {
             Spacer(Modifier.height(12.dp))
             Text(
-                "This build has no GroupMe Client ID yet. After creating an app at dev.groupme.com, put the public Client ID in groupme/client-id.txt — or paste an access token below.",
+                "This build has no GroupMe Client ID yet. After creating an app at dev.groupme.com with HTTPS callback https://burton-workspaces.github.io/burton-groupme/oauth/, put the public Client ID in groupme/client-id.txt — or paste an access token below.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = BurtonMute,
             )

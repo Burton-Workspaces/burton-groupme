@@ -1,0 +1,42 @@
+# GitHub Pages
+#
+# What: Publishes web/ as https://burton-workspaces.github.io/burton-groupme/
+#       so GroupMe can redirect to an HTTPS callback. oauth/index.html hops
+#       to burtongroupme://oauth with the access_token query string.
+# When: push to master that touches web/ or this workflow.
+# Does not: build the Android APK.
+name: GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "web/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy Pages
+    if: github.repository == 'Burton-Workspaces/burton-groupme'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -51,7 +51,7 @@ android {
         versionName = appVersion
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "GROUPME_CLIENT_ID", javaStringLiteral(groupMeClientId()))
-        buildConfigField("String", "GROUPME_REDIRECT_URI", javaStringLiteral("burtongroupme://oauth"))
+        buildConfigField("String", "GROUPME_REDIRECT_URI", javaStringLiteral("https://burton-workspaces.github.io/burton-groupme/oauth/"))
     }
 
     signingConfigs {

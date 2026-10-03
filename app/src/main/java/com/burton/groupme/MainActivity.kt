@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
 
     private fun handleOauthIntent(intent: Intent?) {
         val uri = intent?.data ?: return
-        if (uri.scheme != GroupMeOAuth.REDIRECT_SCHEME || uri.host != GroupMeOAuth.REDIRECT_HOST) return
+        if (!GroupMeOAuth.isCallback(uri.scheme, uri.host, uri.path)) return
         val error = uri.getQueryParameter("error")
         val description = uri.getQueryParameter("error_description").orEmpty()
         val token = uri.getQueryParameter("access_token")

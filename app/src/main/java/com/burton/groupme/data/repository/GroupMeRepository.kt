@@ -81,9 +81,8 @@ class GroupMeRepository @Inject constructor(
         if (clientId.isBlank()) {
             throw GroupMeApiException("oauth.authorize", "missing_client_id")
         }
-        val state = GroupMeOAuth.randomState()
-        prefs.setPendingOauth(state)
-        return GroupMeOAuth.authorizeUrl(clientId, state)
+        prefs.setPendingOauth(GroupMeOAuth.randomState())
+        return GroupMeOAuth.authorizeUrl(clientId)
     }
 
     suspend fun completeOAuth(token: String, state: String) {

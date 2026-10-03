@@ -26,7 +26,13 @@ The emulator can run the UI. Connect with GroupMe against a real account is the 
 
 ## GroupMe application
 
-The Android client is not a GroupMe application by itself. Register one at [dev.groupme.com](https://dev.groupme.com/) with callback URL `burtongroupme://oauth`. Put the public Client ID in [`groupme/client-id.txt`](../groupme/client-id.txt). Never commit a client secret.
+The Android client is not a GroupMe application by itself. GroupMe only accepts an **HTTPS** callback. Register one at [dev.groupme.com](https://dev.groupme.com/) with:
+
+`https://burton-workspaces.github.io/burton-groupme/oauth/`
+
+[`web/oauth/index.html`](../web/oauth/index.html) is that page. It redirects into the app (`burtongroupme://oauth`). GitHub Pages publishes `web/` from [`.github/workflows/pages.yml`](../.github/workflows/pages.yml). In the GitHub repo: **Settings → Pages → Source: GitHub Actions**.
+
+Put the public Client ID in [`groupme/client-id.txt`](../groupme/client-id.txt). Never commit a client secret.
 
 Without a Client ID, **Use a token** still signs in.
 
@@ -42,6 +48,7 @@ app/src/main/java/com/burton/groupme/
   ui/home, channel, search, settings, signin, components, theme
 app/src/test/java/…            TinyJson, GroupMeCodec, MessageText, OAuth
 groupme/                       public Client ID
+web/oauth/                     HTTPS callback hop for GitHub Pages
 ```
 
 Parser tests cover GroupMe JSON. Run those before changing `GroupMeCodec`.

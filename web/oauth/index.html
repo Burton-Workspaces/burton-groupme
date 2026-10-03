@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Burton GroupMe</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, sans-serif;
+      background: #000;
+      color: #f5f2ec;
+    }
+    main { max-width: 28rem; padding: 2rem; text-align: center; }
+    p { color: #9a958c; line-height: 1.45; }
+    a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 14px;
+      background: #f5f2ec;
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Burton GroupMe</h1>
+    <p id="status">Opening the app…</p>
+    <p><a id="open" href="burtongroupme://oauth">Open Burton GroupMe</a></p>
+  </main>
+  <script>
+    (function () {
+      var params = window.location.search.replace(/^\?/, "");
+      if (window.location.hash && window.location.hash.indexOf("access_token=") !== -1) {
+        params = window.location.hash.replace(/^#/, "");
+      }
+      var target = "burtongroupme://oauth";
+      if (params) target += "?" + params;
+      document.getElementById("open").setAttribute("href", target);
+      var intent = "intent://oauth";
+      if (params) intent += "?" + params;
+      intent += "#Intent;scheme=burtongroupme;end";
+      var status = document.getElementById("status");
+      if (!/access_token=/.test(target) && !/error=/.test(target)) {
+        status.textContent = "GroupMe callback for Burton GroupMe. Install the app, then Connect with GroupMe from the phone.";
+        return;
+      }
+      window.location.replace(intent);
+      setTimeout(function () { window.location.replace(target); }, 400);
+    })();
+  </script>
+</body>
+</html>
