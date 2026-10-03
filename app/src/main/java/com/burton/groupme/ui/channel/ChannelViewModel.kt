@@ -56,6 +56,17 @@ class ChannelViewModel @Inject constructor(
         }
     }
 
+    fun leave(onLeft: () -> Unit) {
+        if (channelId.isBlank() || _busy.value) return
+        viewModelScope.launch {
+            _busy.value = true
+            runCatching { repository.leave(channelId) }
+                .onSuccess { onLeft() }
+                .onFailure { _notice.value = it.message }
+            _busy.value = false
+        }
+    }
+
     fun clearNotice() {
         _notice.value = null
     }

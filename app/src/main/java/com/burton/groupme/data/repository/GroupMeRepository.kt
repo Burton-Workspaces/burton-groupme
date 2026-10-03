@@ -16,6 +16,7 @@ import com.burton.groupme.domain.GroupMeMessage
 import com.burton.groupme.domain.GroupMeSnapshot
 import com.burton.groupme.domain.GroupMeUser
 import com.burton.groupme.domain.SearchHit
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,6 +56,7 @@ class GroupMeRepository @Inject constructor(
     private var pollJob: Job? = null
     private var channelPoll: Job? = null
     private var openChannelId: String? = null
+    private val leftGroupIds = ConcurrentHashMap.newKeySet<String>()
 
     fun start() {
         if (started) return
@@ -64,6 +67,7 @@ class GroupMeRepository @Inject constructor(
                 if (!auth.isPresent) {
                     pollJob?.cancel()
                     channelPoll?.cancel()
+                    leftGroupIds.clear()
                     _state.value = GroupMeSnapshot()
                     _histories.value = emptyMap()
                 } else {
@@ -128,6 +132,7 @@ class GroupMeRepository @Inject constructor(
         channelPoll?.cancel()
         tokens.clear()
         prefs.clearToken()
+        leftGroupIds.clear()
         _state.value = GroupMeSnapshot()
         _histories.value = emptyMap()
     }
@@ -192,6 +197,34 @@ class GroupMeRepository @Inject constructor(
             )
         }
         loadHistory(channelId, older = false)
+    }
+
+    suspend fun leave(channelId: String) {
+        try {
+            if (GroupMeCodec.isDirect(channelId) || channelId.isBlank()) {
+                throw GroupMeApiException("groups.leave", "direct_cannot_leave")
+            }
+            val me = _state.value.account?.id.orEmpty()
+            val conversation = _state.value.conversation(channelId)
+            if (conversation?.createdBy(me) == true) {
+                throw GroupMeApiException("groups.leave", "creator_cannot_leave")
+            }
+            val membershipId = conversation?.membershipId.orEmpty().ifBlank {
+                lookupMembershipId(channelId, me)
+            }
+            if (membershipId.isNotBlank()) {
+                callPost("groups/$channelId/members/$membershipId/remove")
+            } else {
+                callPost("groups/$channelId/leave")
+            }
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            throw Exception(friendly(error), error)
+        }
+        leftGroupIds += channelId
+        dropConversation(channelId)
+        runCatching { hydrate() }
     }
 
     suspend fun toggleLike(channelId: String, messageId: String) {
@@ -284,9 +317,11 @@ class GroupMeRepository @Inject constructor(
                     .orEmpty()
                 GroupMeCodec.user(other)?.let { users[it.id] = it }
             }
-            val groups = groupsRaw.mapNotNull(GroupMeCodec::group)
+            val groups = groupsRaw.mapNotNull { GroupMeCodec.group(it, me.id) }
             val chats = chatsRaw.mapNotNull(GroupMeCodec::chat)
-            val conversations = (groups + chats).sortedWith(
+            val incoming = groups + chats
+            leftGroupIds.removeAll { id -> incoming.none { it.id == id } }
+            val conversations = incoming.filterNot { it.id in leftGroupIds }.sortedWith(
                 compareByDescending<Conversation> { it.updatedAt }
                     .thenBy { it.title().lowercase() },
             )
@@ -373,6 +408,19 @@ class GroupMeRepository @Inject constructor(
         return byId.values.sortedBy { it.createdAt }
     }
 
+    private suspend fun lookupMembershipId(groupId: String, meId: String): String {
+        val body = callGet("groups/$groupId")
+        return GroupMeCodec.membershipId(body.responseObj().objList("members"), meId)
+    }
+
+    private fun dropConversation(channelId: String) {
+        closeChannel(channelId)
+        _histories.update { it - channelId }
+        _state.update { snapshot ->
+            snapshot.copy(conversations = snapshot.conversations.filterNot { it.id == channelId })
+        }
+    }
+
     private fun likeTarget(channelId: String, message: GroupMeMessage?): String {
         if (message != null && message.conversationId.isNotBlank() && !GroupMeCodec.isDirect(message.conversationId)) {
             return message.conversationId
@@ -445,6 +493,12 @@ class GroupMeRepository @Inject constructor(
                 "Session expired. Connect with GroupMe again."
             code.contains("429") || code.contains("rate", ignoreCase = true) ->
                 "GroupMe rate-limited this phone. Wait a moment and retry."
+            code == "direct_cannot_leave" ->
+                "Direct messages cannot be left."
+            code == "creator_cannot_leave" || code.contains("creator", ignoreCase = true) ->
+                "You created this group, so GroupMe will not let you leave."
+            code == "missing_membership" ->
+                "Could not find your membership in this group."
             else -> error.message ?: "GroupMe request failed."
         }
     }

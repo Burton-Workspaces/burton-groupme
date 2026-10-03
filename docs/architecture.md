@@ -32,6 +32,7 @@ Connect with GroupMe opens `https://oauth.groupme.com/oauth/authorize?client_id=
 | `groups/{id}/messages` POST | Send to a group (`source_guid`) |
 | `direct_messages` POST | Send a DM |
 | `messages/{conversation_id}/{id}/like` / `unlike` | Heart on a message |
+| `groups/{id}/members/{membership_id}/remove` POST | Leave a group (self). Falls back to `groups/{id}/leave` if membership id is missing. The creator cannot leave. |
 
 Pagination uses `page` / `per_page` with a page cap.
 

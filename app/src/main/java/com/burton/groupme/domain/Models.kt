@@ -35,12 +35,17 @@ data class Conversation(
     val otherUserId: String,
     val imageUrl: String,
     val updatedAt: Long,
+    val creatorUserId: String = "",
+    val membershipId: String = "",
 ) {
     val isDirect: Boolean get() = kind == ConversationKind.DM
 
     fun title(): String = name.ifBlank {
         if (isDirect) "Direct message" else "Group"
     }
+
+    fun createdBy(userId: String): Boolean =
+        userId.isNotBlank() && creatorUserId == userId
 }
 
 data class GroupMeFile(

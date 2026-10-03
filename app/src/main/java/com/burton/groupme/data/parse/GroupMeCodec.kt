@@ -38,25 +38,33 @@ object GroupMeCodec {
         )
     }
 
-    fun group(raw: Map<String, Any?>): Conversation? {
+    fun group(raw: Map<String, Any?>, meId: String = ""): Conversation? {
         val id = raw.str("id")
         if (id.isBlank()) return null
         val messages = raw.obj("messages")
         val preview = messages.obj("preview")
         val latestText = preview.str("text").ifBlank { preview.str("nickname") }
+        val members = raw.objList("members")
         return Conversation(
             id = id,
             name = raw.str("name"),
             kind = ConversationKind.GROUP,
             topic = raw.str("description"),
             unread = messages.int("unread_count"),
-            memberCount = raw.objList("members").size.takeIf { it > 0 } ?: raw.int("members_count"),
+            memberCount = members.size.takeIf { it > 0 } ?: raw.int("members_count"),
             latestText = latestText,
             latestTs = epochToTs(messages.long("last_message_created_at")),
             otherUserId = "",
             imageUrl = raw.str("image_url"),
             updatedAt = raw.long("updated_at"),
+            creatorUserId = raw.str("creator_user_id"),
+            membershipId = membershipId(members, meId),
         )
+    }
+
+    fun membershipId(members: List<Map<String, Any?>>, userId: String): String {
+        if (userId.isBlank()) return ""
+        return members.firstOrNull { it.str("user_id") == userId }?.str("id").orEmpty()
     }
 
     fun chat(raw: Map<String, Any?>): Conversation? {

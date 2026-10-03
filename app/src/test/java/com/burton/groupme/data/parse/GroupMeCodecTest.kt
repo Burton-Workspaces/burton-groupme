@@ -30,8 +30,9 @@ class GroupMeCodecTest {
                   "name":"Family",
                   "description":"home",
                   "image_url":"https://g",
+                  "creator_user_id":"u1",
                   "updated_at":1700000000,
-                  "members":[{"user_id":"u1","nickname":"Ada","image_url":"https://a"}],
+                  "members":[{"id":"mem-1","user_id":"u1","nickname":"Ada","image_url":"https://a"}],
                   "messages":{
                     "count":12,
                     "last_message_created_at":1700000100,
@@ -40,13 +41,29 @@ class GroupMeCodecTest {
                 }
                 """.trimIndent(),
             ),
+            meId = "u1",
         )!!
         assertEquals(ConversationKind.GROUP, group.kind)
         assertEquals("Family", group.name)
         assertEquals("hello", group.latestText)
         assertEquals("1700000100", group.latestTs)
         assertEquals(1, group.memberCount)
+        assertEquals("u1", group.creatorUserId)
+        assertEquals("mem-1", group.membershipId)
+        assertTrue(group.createdBy("u1"))
+        assertFalse(group.createdBy("u2"))
         assertFalse(group.isDirect)
+    }
+
+    @Test
+    fun membershipIdUsesUserIdNotMembershipId() {
+        val members = listOf(
+            mapOf<String, Any?>("id" to "mem-9", "user_id" to "u9", "nickname" to "Ada"),
+            mapOf<String, Any?>("id" to "mem-2", "user_id" to "u2", "nickname" to "Bob"),
+        )
+        assertEquals("mem-9", GroupMeCodec.membershipId(members, "u9"))
+        assertEquals("", GroupMeCodec.membershipId(members, "missing"))
+        assertEquals("", GroupMeCodec.membershipId(members, ""))
     }
 
     @Test

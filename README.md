@@ -7,7 +7,7 @@ Signed APKs are published on [GitHub Releases](https://github.com/Burton-Workspa
 ## What it does
 
 - **Home** — groups and direct messages
-- **Group** — history, send, likes
+- **Group** — history, send, likes, leave
 - **Search** — groups, DMs, and messages already loaded on the phone
 - **Settings** — account, sign out, app version
 
