@@ -150,7 +150,7 @@ find_sibling_keystore() {
     return
   fi
   local sibling
-  for sibling in burton-slack burton-photos-android burton-weather burton-pod burton-meeting burton-sonos-android burton-app-hub burton-whatsapp-android; do
+  for sibling in burton-app-hub burton-finance burton-issues burton-meeting burton-photos-android burton-pod burton-slack burton-sonos-android burton-weather burton-whatsapp-android; do
     if [[ -f "$ROOT/../$sibling/keystore.properties" ]]; then
       printf '%s\n' "$ROOT/../$sibling"
       return
@@ -282,5 +282,5 @@ echo "Pages checkout: $FDROID_PAGES_DIR"
 echo "GitHub repo:    $REPO"
 echo "Publish later with:"
 echo "  source fdroid-pages.env"
-echo "  ./scripts/upload-release-apk.sh \"\$(tr -d '[:space:]' < version.txt)\""
-echo "  ./scripts/publish-fdroid-pages.sh \"\$(tr -d '[:space:]' < version.txt)\""
+echo "  ./scripts/upload-release-apk.sh"
+echo "  ./scripts/publish-fdroid-pages.sh"
