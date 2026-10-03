@@ -37,6 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.burton.groupme.report.ShakeToReport
 import com.burton.groupme.ui.channel.ChannelScreen
 import com.burton.groupme.ui.home.HomeScreen
 import com.burton.groupme.ui.navigation.Routes
@@ -51,6 +52,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject lateinit var repository: GroupMeRepository
+    private val shakeToReport by lazy { ShakeToReport(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +69,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        shakeToReport.start()
+    }
+
+    override fun onPause() {
+        shakeToReport.stop()
+        super.onPause()
     }
 
     override fun onNewIntent(intent: Intent) {

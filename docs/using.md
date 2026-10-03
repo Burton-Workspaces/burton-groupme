@@ -35,9 +35,15 @@ Settings (gear) holds the account, sign out, and the app version.
 
 Newest messages at the bottom. Tap a message to like or unlike it (heart). The compose field at the bottom sends with **Send**.
 
+On a group, the ⋮ menu has **Leave group**. That removes you from the group and drops it from Home. GroupMe will not let the creator leave. Direct messages have no leave action.
+
 ### Search
 
 Local search over group names, DM names, last-message previews, and messages already loaded into memory. Tap a hit to open that conversation.
+
+### File an issue
+
+Shake the phone, or long-press **About** in Settings. Burton Issues opens on New issue with this app already selected. Nothing is posted until you submit; Back cancels.
 
 ## Permissions
 
