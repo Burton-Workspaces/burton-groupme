@@ -97,7 +97,7 @@ Point `storeFile` at your JKS and fill `storePassword`, `keyAlias`, and `keyPass
 gh auth status
 ```
 
-**3. Pages checkout** — clone [Burton-Workspaces/burton-sonos-fdroid](https://github.com/Burton-Workspaces/burton-sonos-fdroid) **next to** this app (`../burton-sonos-fdroid`). `./scripts/publish-fdroid-pages.sh` uses that path by default.
+**3. Pages checkout** — clone [Burton-Workspaces/burton-app-dist](https://github.com/Burton-Workspaces/burton-app-dist) **next to** this app (`../rabun-app-dist`). `./scripts/publish-fdroid-pages.sh` uses that path by default.
 
 ### Each release
 
@@ -118,17 +118,17 @@ That runs `assembleRelease`, copies `burton-groupme-<version>.apk` into the repo
 ./scripts/publish-fdroid-pages.sh
 ```
 
-That reuses `burton-groupme-<version>.apk` if it is still in the app root, runs `fdroid update`, copies only `repo/` into `../burton-sonos-fdroid/fdroid/repo/`, writes `FINGERPRINT`, and pushes. The catalog still includes Burton Sonos, Slack, and other packages already in `$FDROID_ROOT/repo/`.
+That reuses `burton-groupme-<version>.apk` if it is still in the app root, runs `fdroid update`, copies only `repo/` into `../rabun-app-dist/fdroid/repo/`, writes `FINGERPRINT`, and pushes. The catalog still includes Burton Sonos, Slack, and other packages already in `$FDROID_ROOT/repo/`.
 
 **7. Confirm**
 
 - GitHub Release: `https://github.com/Burton-Workspaces/burton-groupme/releases/tag/v0.1.0`
-- F-Droid index: `https://burton-workspaces.github.io/burton-sonos-fdroid/fdroid/repo`
-- Fingerprint: `../burton-sonos-fdroid/FINGERPRINT` (also printed by the publish script)
+- F-Droid index: `https://burton-workspaces.github.io/burton-app-dist/fdroid/repo`
+- Fingerprint: `../rabun-app-dist/FINGERPRINT` (also printed by the publish script)
 
 Droidify → **Repositories** → **+**
 
-- Address: `https://burton-workspaces.github.io/burton-sonos-fdroid/fdroid/repo`
+- Address: `https://burton-workspaces.github.io/burton-app-dist/fdroid/repo`
 - Fingerprint: the 64-character hex from `FINGERPRINT`
 
 Replace `0.1.0` with whatever is in `version.txt` on later versions.
