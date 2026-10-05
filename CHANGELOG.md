@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Automatic releases are produced by [release-please](https://github.com/googleapis/release-please)
 from [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [0.4.0](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.3.0...v0.4.0) (2026-10-05)
+
+
+### Features
+
+* leave groups from the conversation screen ([7fdd9cb](https://github.com/Burton-Workspaces/burton-groupme/commit/7fdd9cb2eb763f7363771a7f6e2efeec2c2475e5))
+
 ## [0.3.0](https://github.com/Burton-Workspaces/burton-groupme/compare/v0.2.1...v0.3.0) (2026-10-03)
 
 
